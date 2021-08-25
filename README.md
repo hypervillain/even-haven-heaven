@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a Prismic project bootstrapped with Next.js.
 
-## Getting Started
+It features a single slice `MySlice`, that displays a Top Product, selected inside Prismic, from an external database.
+It relies on Integration Fields (using external products from inside Prismic writing room).
 
-First, run the development server:
+#### How?
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+I enabled Integration Fields inside my Prismic project and added my own endpoint (https://if-example-out.vercel.app/api/if) there.
+Once, this was done, I added an IF field to my slice:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```JSON
+"topProduct": {
+   "type": "IntegrationFields",
+   "config": {
+       "catalog": "even-haven-heaven--my_catalog",
+       "label": "Top Product"
+   }
+}
+````
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+👆 This has to be done manually right now, inside `MySlice/model.json`.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+I then created a Page Custom type, which contains a uid and the `MySlice` slice.
+From there, I was able to hand-pick a product from my catalog inside my Prismic document (uid: `my-page`), and save it.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+When querying the page `my-page`, I can now see that `slice.primary.topProduct` contains the JSON product that was selected by my content editor.

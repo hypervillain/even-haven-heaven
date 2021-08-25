@@ -1,0 +1,5 @@
+{
+  "apiEndpoint": "https://even-haven-heaven.prismic.io/api/v2",
+  "_latest": "0.1.0",
+  "libraries": ["@/slices"]
+}
